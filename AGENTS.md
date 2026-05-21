@@ -117,6 +117,17 @@ import * as strings from 'SharepointSiteAssistantApplicationCustomizerStrings';
 
 If a string is missing from `/loc`, add it there first — do not inline a literal as a temporary measure.
 
+## SPFx DOM rules
+
+**Hard rule: all rendering must stay within the SPFx host `domElement`. Never access or render into `document.body` or any DOM node outside the host element.**
+
+This means:
+
+- Never use `document.body`, `document.querySelector`, or any global DOM selector to find or create nodes for React rendering.
+- Never use `ReactDOM.createPortal(content, document.body)` or any equivalent that portals outside the host element.
+- Fluent UI `Panel` and `Layer` components internally portal to `document.body` by default — this violates SPFx sandboxing. If a Panel or similar component must be used, configure it to target a host element inside `domElement`, or replace it with a custom implementation that does not escape the host.
+- SPFx extensions may run in iframes or sandboxed contexts where access to the host page DOM is restricted. Rendering outside `domElement` can break silently or behave unpredictably across tenants and themes.
+
 ## Testing approach
 
 - Services are the primary unit test target. Constructor injection makes dependencies easy to mock.

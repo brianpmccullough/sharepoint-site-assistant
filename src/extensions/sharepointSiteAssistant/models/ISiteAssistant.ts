@@ -1,5 +1,8 @@
+import { IChatService } from './IChatService';
+
 export interface ISiteAssistantProps {
   displayName: string;
+  chatService: IChatService;
 }
 
 export interface IAssistantButtonProps {
@@ -8,6 +11,7 @@ export interface IAssistantButtonProps {
 
 export interface IChatPanelProps {
   displayName: string;
+  chatService: IChatService;
   onClose: () => void;
 }
 
@@ -20,4 +24,5 @@ export interface IChatInputProps {
   value: string;
   onChange: (value: string) => void;
   onSend: () => void;
+  disabled?: boolean;
 }

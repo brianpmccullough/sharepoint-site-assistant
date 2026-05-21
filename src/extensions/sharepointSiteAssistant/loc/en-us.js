@@ -4,7 +4,6 @@ define([], function() {
     "OpenAssistantLabel": "Open AI Site Assistant",
     "ChatPanelTitle": "Site Assistant",
     "CloseLabel": "Close",
-    "ChatComingSoon": "Chat coming soon…",
     "ChatGreetingPrefix": "Hello",
     "ChatGreetingSubtitle": "Ask a question or get started with one of these prompts:",
     "SuggestionPrompt1": "What is this site about?",
@@ -15,6 +14,7 @@ define([], function() {
     "MicrophoneLabel": "Voice input",
     "AttachLabel": "Add attachment",
     "MoreOptionsLabel": "More options",
-    "CollapseLabel": "Collapse"
+    "CollapseLabel": "Collapse",
+    "ChatErrorMessage": "Something went wrong. Please try again."
   }
 });

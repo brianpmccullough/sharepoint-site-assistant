@@ -4,7 +4,7 @@ import * as strings from 'SharepointSiteAssistantApplicationCustomizerStrings';
 import { IChatInputProps } from '../models/ISiteAssistant';
 import styles from './ChatInput.module.scss';
 
-const ChatInput: React.FC<IChatInputProps> = ({ value, onChange, onSend }) => {
+const ChatInput: React.FC<IChatInputProps> = ({ value, onChange, onSend, disabled }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -14,7 +14,7 @@ const ChatInput: React.FC<IChatInputProps> = ({ value, onChange, onSend }) => {
 
   return (
     <div className={styles.container}>
-      <button className={styles.iconButton} aria-label={strings.AttachLabel}>
+      <button type="button" className={styles.iconButton} aria-label={strings.AttachLabel} disabled={disabled}>
         <AddRegular fontSize={20} />
       </button>
       <input
@@ -25,11 +25,12 @@ const ChatInput: React.FC<IChatInputProps> = ({ value, onChange, onSend }) => {
         onChange={e => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         aria-label={strings.ChatInputPlaceholder}
+        disabled={disabled}
       />
-      <button className={styles.iconButton} aria-label={strings.MicrophoneLabel}>
+      <button type="button" className={styles.iconButton} aria-label={strings.MicrophoneLabel} disabled={disabled}>
         <MicRegular fontSize={20} />
       </button>
-      <button className={styles.sendButton} onClick={onSend} aria-label={strings.SendMessageLabel}>
+      <button type="button" className={styles.sendButton} onClick={onSend} aria-label={strings.SendMessageLabel} disabled={disabled}>
         <SendFilled fontSize={16} />
       </button>
     </div>

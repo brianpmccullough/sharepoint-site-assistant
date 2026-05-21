@@ -3,7 +3,6 @@ declare interface ISharepointSiteAssistantApplicationCustomizerStrings {
   OpenAssistantLabel: string;
   ChatPanelTitle: string;
   CloseLabel: string;
-  ChatComingSoon: string;
   ChatGreetingPrefix: string;
   ChatGreetingSubtitle: string;
   SuggestionPrompt1: string;
@@ -15,6 +14,7 @@ declare interface ISharepointSiteAssistantApplicationCustomizerStrings {
   AttachLabel: string;
   MoreOptionsLabel: string;
   CollapseLabel: string;
+  ChatErrorMessage: string;
 }
 
 declare module 'SharepointSiteAssistantApplicationCustomizerStrings' {

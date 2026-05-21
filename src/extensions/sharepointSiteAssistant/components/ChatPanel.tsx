@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Panel, PanelType } from '@fluentui/react/lib/Panel';
 import {
   BotSparkleFilled,
@@ -13,14 +14,21 @@ import SuggestionChip from './SuggestionChip';
 import ChatInput from './ChatInput';
 import styles from './ChatPanel.module.scss';
 
-const SUGGESTIONS: string[] = [
+const FALLBACK_SUGGESTIONS: string[] = [
   strings.SuggestionPrompt1,
   strings.SuggestionPrompt2,
   strings.SuggestionPrompt3,
 ];
 
-const ChatPanel: React.FC<IChatPanelProps> = ({ displayName, onClose }) => {
-  const { messages, inputText, setInputText, sendMessage } = useChatMessages();
+const ChatPanel: React.FC<IChatPanelProps> = ({ displayName, chatService, onClose }) => {
+  const { messages, inputText, isLoading, setInputText, sendMessage } = useChatMessages(chatService);
+  const [suggestions, setSuggestions] = useState<string[]>(FALLBACK_SUGGESTIONS);
+
+  useEffect(() => {
+    chatService.getPrompts()
+      .then(prompts => { if (prompts.length > 0) setSuggestions(prompts); })
+      .catch(() => { /* keep fallback */ });
+  }, [chatService]);
 
   return (
     <Panel
@@ -49,7 +57,7 @@ const ChatPanel: React.FC<IChatPanelProps> = ({ displayName, onClose }) => {
         </div>
       )}
       onRenderFooterContent={() => (
-        <ChatInput value={inputText} onChange={setInputText} onSend={sendMessage} />
+        <ChatInput value={inputText} onChange={setInputText} onSend={sendMessage} disabled={isLoading} />
       )}
       onDismiss={onClose}
     >
@@ -57,7 +65,7 @@ const ChatPanel: React.FC<IChatPanelProps> = ({ displayName, onClose }) => {
         <h2 className={styles.greeting}>{strings.ChatGreetingPrefix} {displayName}!</h2>
         <p className={styles.subtitle}>{strings.ChatGreetingSubtitle}</p>
         <div className={styles.suggestions}>
-          {SUGGESTIONS.map((text, i) => (
+          {suggestions.map((text, i) => (
             <SuggestionChip key={i} text={text} onClick={setInputText} />
           ))}
         </div>
