@@ -4,7 +4,7 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "pageUrl": "https://{tenantDomain}/sites/home",
       "customActions": {
         "4e181aa3-0e31-4027-b0ad-bbc997611cbc": {
           "location": "ClientSideExtension.ApplicationCustomizer",

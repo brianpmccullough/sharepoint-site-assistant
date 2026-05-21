@@ -1,0 +1,19 @@
+.chip {
+  background: "[theme: white, default: #ffffff]";
+  border: 1px solid "[theme: neutralLight, default: #edebe9]";
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: normal;
+  color: "[theme: neutralPrimary, default: #323130]";
+  transition: background 0.1s ease;
+  box-sizing: border-box;
+
+  &:hover {
+    background: "[theme: neutralLighter, default: #f3f2f1]";
+  }
+}

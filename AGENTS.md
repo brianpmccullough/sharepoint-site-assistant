@@ -57,7 +57,65 @@ If a second extension is added, it gets its own identical layer structure under 
 
 **Styling** uses Fluent UI components for M365-consistent UI, and CSS Modules (`.module.scss`) for layout and custom overrides.
 
+## SCSS theming rules
+
+**Hard rule: hardcoded colors, fonts, and pixel sizes in `.module.scss` files require explicit operator approval before use.**
+
+Instead, use SPFx theme tokens and semantic slots so styles automatically adapt to the site's theme:
+
+```scss
+// Theme token syntax — second argument is the fallback shown at build time only
+color: "[theme: themePrimary, default: #0078d4]";
+background-color: "[theme: neutralLighter, default: #f3f2f1]";
+
+// Or assign to a SCSS variable first for reuse
+$themePrimary: "[theme: themePrimary, default: #0078d4]";
+$neutralPrimary: "[theme: neutralPrimary, default: #323130]";
+```
+
+Common semantic slots to prefer over raw colors:
+
+| Slot | Use |
+|---|---|
+| `themePrimary` | Primary brand/action color |
+| `themeDark` / `themeDarker` | Hover / active states on primary |
+| `neutralPrimary` | Default body text |
+| `neutralSecondary` | Secondary / subdued text |
+| `neutralLight` / `neutralLighter` | Subtle backgrounds, dividers |
+| `bodyBackground` | Page/panel background |
+| `white` | White surface (adapts in high-contrast) |
+
+For the full list of available slots, inspect `window.__themeState__.theme` in the browser console on any SharePoint page, or see the [official SPFx theming docs](https://learn.microsoft.com/en-us/sharepoint/dev/spfx/use-theme-colors-in-your-customizations).
+
+Pixel sizes for spacing and type should use the standard 4px grid and reference Fluent UI spacing tokens where possible. Any deviation (fixed `px` values, explicit `font-size`, explicit `font-family`) requires operator sign-off.
+
 **State management** uses React Context and hooks only — no external state library.
+
+## Localization rules
+
+**Hard rule: every string displayed to end users must come from the extension's `/loc` files — never hardcoded inline.**
+
+This includes labels, button text, panel headers, placeholder text, error messages, tooltips, and `aria-label` values.
+
+Add new strings to both the type declaration and all locale files:
+
+```
+src/extensions/sharepointSiteAssistant/loc/
+  myStrings.d.ts   ← declare the interface member
+  en-us.js         ← provide the English value
+```
+
+Import and use them in components and hooks via the strings module:
+
+```ts
+import * as strings from 'SharepointSiteAssistantApplicationCustomizerStrings';
+
+// in JSX
+<Panel headerText={strings.ChatPanelTitle} />
+<button aria-label={strings.OpenAssistantLabel} />
+```
+
+If a string is missing from `/loc`, add it there first — do not inline a literal as a temporary measure.
 
 ## Testing approach
 

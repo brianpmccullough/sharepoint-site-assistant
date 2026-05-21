@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/brian/_code/github/brianpmccullough/sharepoint-site-assistant/src/extensions/sharepointSiteAssistant/models)",
+      "Bash(mkdir -p /Users/brian/_code/github/brianpmccullough/sharepoint-site-assistant/src/extensions/sharepointSiteAssistant/components)",
+      "Bash(mkdir -p /Users/brian/_code/github/brianpmccullough/sharepoint-site-assistant/src/extensions/sharepointSiteAssistant/hooks)"
+    ]
+  }
+}

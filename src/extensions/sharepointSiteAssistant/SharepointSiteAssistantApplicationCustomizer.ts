@@ -1,39 +1,39 @@
 import { Log } from '@microsoft/sp-core-library';
-import {
-  BaseApplicationCustomizer
-} from '@microsoft/sp-application-base';
-import { Dialog } from '@microsoft/sp-dialog';
+import { BaseApplicationCustomizer, PlaceholderName } from '@microsoft/sp-application-base';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import * as strings from 'SharepointSiteAssistantApplicationCustomizerStrings';
+import SiteAssistant from './components/SiteAssistant';
 
 const LOG_SOURCE: string = 'SharepointSiteAssistantApplicationCustomizer';
 
-/**
- * If your command set uses the ClientSideComponentProperties JSON input,
- * it will be deserialized into the BaseExtension.properties object.
- * You can define an interface to describe it.
- */
 export interface ISharepointSiteAssistantApplicationCustomizerProperties {
-  // This is an example; replace with your own property
-  testMessage: string;
 }
 
-/** A Custom Action which can be run during execution of a Client Side Application */
 export default class SharepointSiteAssistantApplicationCustomizer
   extends BaseApplicationCustomizer<ISharepointSiteAssistantApplicationCustomizerProperties> {
 
   public onInit(): Promise<void> {
-    Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
-
-    let message: string = this.properties.testMessage;
-    if (!message) {
-      message = '(No properties were provided.)';
-    }
-
-    Dialog.alert(`Hello from ${strings.Title}:\n\n${message}`).catch(() => {
-      /* handle error */
-    });
-
+    Log.info(LOG_SOURCE, 'Initialized');
+    this.context.placeholderProvider.changedEvent.add(this, this._renderPlaceholder);
+    this._renderPlaceholder();
     return Promise.resolve();
+  }
+
+  private _renderPlaceholder(): void {
+    const placeholder = this.context.placeholderProvider.tryCreateContent(PlaceholderName.Bottom);
+    if (!placeholder) {
+      Log.warn(LOG_SOURCE, 'Bottom placeholder not available');
+      return;
+    }
+    const displayName = this.context.pageContext.user.displayName;
+    ReactDOM.render(React.createElement(SiteAssistant, { displayName }), placeholder.domElement);
+  }
+
+  protected onDispose(): void {
+    const placeholder = this.context.placeholderProvider.tryCreateContent(PlaceholderName.Bottom);
+    if (placeholder) {
+      ReactDOM.unmountComponentAtNode(placeholder.domElement);
+    }
   }
 }
